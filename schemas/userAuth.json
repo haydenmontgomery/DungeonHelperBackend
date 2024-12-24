@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "default": {},
+  "title": "Root Schema",
+  "required": [
+      "username",
+      "password"
+  ],
+  "properties": {
+      "username": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 30,
+          "title": "The username Schema",
+          "examples": [
+              "testuser"
+          ]
+      },
+      "password": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 20,
+          "title": "The password Schema",
+          "examples": [
+              "password"
+          ]
+      }
+  },
+  "examples": [{
+      "username": "testuser",
+      "password": "password"
+  }]
+}

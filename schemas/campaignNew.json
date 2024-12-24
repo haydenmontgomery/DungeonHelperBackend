@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "default": {},
+  "title": "Root Schema",
+  "required": [
+      "title"
+  ],
+  "properties": {
+      "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60,
+          "title": "The title Schema",
+          "examples": [
+              "testtitle"
+          ]
+      },
+      "description": {
+          "type": "string",
+          "minLength": 5,
+          "title": "The description Schema",
+          "examples": [
+              "testdescription"
+          ]
+      },
+      "maxPlayers": {
+          "type": "integer",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 30,
+          "title": "The maxPlayers Schema",
+          "examples": [
+            5
+          ]
+      },
+      "publicView": {
+          "type": "boolean",
+          "default": false,
+          "title": "The publicView Schema",
+          "examples": [
+              false
+          ]
+      }
+  },
+  "examples": [{
+  }]
+}

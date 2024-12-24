@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "default": {},
+  "title": "Root Schema",
+  "required": [
+  ],
+  "properties": {
+      "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 99,
+          "title": "The name Schema",
+          "examples": [
+              "testcharacter"
+          ]
+      },
+      "class": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 50,
+          "title": "The class Schema",
+          "examples": [
+              "fighter"
+          ]
+      },
+      "bio": {
+          "type": "string",
+          "minLength": 1,
+          "title": "The bio Schema",
+          "examples": [
+              "testbio"
+          ]
+      },
+      "age": {
+          "type": "integer",
+          "title": "The age Schema",
+          "examples": [
+              99
+          ]
+      },
+      "height": {
+          "type": "string",
+          "minLength": 6,
+          "maxLength": 60,
+          "title": "The height Schema",
+          "examples": [
+              "3 ft 9 in"
+          ]
+      },
+      "level": {
+          "type": "string",
+          "minimum": 1,
+          "maximum": 20,
+          "title": "The level Schema",
+          "examples": [
+              1
+          ]
+      },
+      "inventory": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "title": "A Schema"
+          },
+          "title": "The inventory Schema",
+          "examples": [
+              "Sword",
+              "Shield",
+              "Potion"
+          ]
+      },
+      "gold": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "The gold Schema",
+          "examples": [
+              999
+          ]
+      },
+      "hp": {
+          "type": "integer",
+          "title": "The hp Schema",
+          "examples": [
+              50
+          ]
+      },
+      "profile_url": {
+          "type": "string",
+          "minLength": 6,
+          "maxLength": 60,
+          "title": "The height Schema"
+      }
+  },
+  "examples": [{
+  }]
+}
