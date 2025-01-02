@@ -158,9 +158,15 @@ router.post("/:title/admins/:username", ensureCampaignAdmin, async function (req
  * Authorization required: admin, campaign admin
  */
 
-router.post("/:title/:username/:id", ensureCampaignAdmin, async function (req, res, next) {
+router.post("/:title/:username/:id", ensureLoggedIn, async function (req, res, next) {
   try {
-    const result = await Campaign.addUsers(req.params.title, req.params.username, req.params.id);
+    console.log("#############################################")
+    console.log(req.params.title, req.params.username, req.params.id);
+    console.log("#############################################")
+    const result = await Campaign.addUsers(req.params.title, req.params.id, req.params.username);
+    console.log("*******************************")
+    console.log(result)
+    console.log("*******************************")
     return res.json({ result });
   } catch (err) {
     return next(err);

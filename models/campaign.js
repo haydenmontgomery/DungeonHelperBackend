@@ -204,14 +204,14 @@ class Campaign {
    * data should be {campaign_id, character_id}
    * 
    **/
-  static async addUsers(campaignId, characterId, username) {
+  static async addUsers(campaignTitle, characterId, username) {
     //Make sure a user
     const precheckUser = await db.query(
       `SELECT id
        FROM users
        WHERE username = $1`, [username]);
 
-    const userId = precheckUser.rows[0];
+    const userId = precheckUser.rows[0].id;
     if(!userId) throw new NotFoundError(`No user: ${username}`);
 
     const precheck2Character = await db.query(
@@ -223,10 +223,19 @@ class Campaign {
     const correctUser = precheck2Character.rows[0];
     if(!correctUser) throw new UnauthorizedError('Only the owner of the character can add them to campaign');
 
+    const getCampaignId = await db.query(
+      `SELECT id
+       FROM campaigns
+       WHERE title = $1`,
+       [campaignTitle]
+    );
+    
+    const campaignId = getCampaignId.rows[0].id;
+
     const result = await db.query(
           `INSERT INTO campaign_users (campaign_id, character_id)
            VALUES ($1, $2)
-           RETURNING campaign_id AS "campaignId"
+           RETURNING campaign_id AS "campaignId",
                      character_id AS "characterId"`,
            [campaignId, characterId]);
 
