@@ -130,9 +130,6 @@ router.patch("/:id/inventory", ensureCharacterOwnerOrAdmin, async function (req,
 
 router.delete("/:id", ensureCharacterOwnerOrAdmin, async function (req, res, next) {
   try {
-    console.log("********************************")
-    console.log("HERE WE ARE")
-    console.log("********************************")
     await Character.remove(req.params.id);
     return res.json({ deleted: req.params.id });
   } catch (err) {

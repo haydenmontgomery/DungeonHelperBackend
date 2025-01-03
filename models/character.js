@@ -126,10 +126,6 @@ class Character {
    */
 
     static async updateInventory(id, data) {
-      console.log("*******************")
-      console.log(data);
-      console.log("*******************")
-
       const result = await db.query(`UPDATE characters 
                         SET inventory = $1
                         WHERE id = $2

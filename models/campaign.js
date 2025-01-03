@@ -48,11 +48,6 @@ class Campaign {
 
     if (!user) throw new NotFoundError(`No username: ${username}`);
     
-    console.log("****************************************")
-    console.log(campaign.id, user.id);
-    console.log("****************************************")
-    
-
     await db.query(
       `INSERT INTO campaign_admins
        (campaign_id, user_id)

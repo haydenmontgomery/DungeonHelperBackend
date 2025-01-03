@@ -32,9 +32,6 @@ router.post("/create", ensureLoggedIn, async function (req, res, next) {
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
     }
-    console.log("#################################")
-    console.log(req.body);
-    console.log("#################################")
     const campaign = await Campaign.create(req.body);
     return res.status(201).json({ campaign });
   } catch (err) {
@@ -160,13 +157,7 @@ router.post("/:title/admins/:username", ensureCampaignAdmin, async function (req
 
 router.post("/:title/:username/:id", ensureLoggedIn, async function (req, res, next) {
   try {
-    console.log("#############################################")
-    console.log(req.params.title, req.params.username, req.params.id);
-    console.log("#############################################")
     const result = await Campaign.addUsers(req.params.title, req.params.id, req.params.username);
-    console.log("*******************************")
-    console.log(result)
-    console.log("*******************************")
     return res.json({ result });
   } catch (err) {
     return next(err);
