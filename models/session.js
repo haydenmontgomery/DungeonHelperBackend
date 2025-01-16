@@ -30,7 +30,7 @@ class Session {
     const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
     const result = await db.query(
-          `INSERT INTO session
+          `INSERT INTO sessions
            (name, password, description, expires_at, campaign_id, dungeon_master_id)
            VALUES ($1, $2, $3, CURRENT_TIMESTAMP + INTERVAL '4 hours' , $4, $5)
            RETURNING name, description, created_at AS "createdAt", expires_at AS "expiresAt", campaign_id AS "campaignId", dungeon_master_id AS "dungeonMasterId"`,
@@ -57,7 +57,8 @@ class Session {
 
   static async get(name) {
     const sessionRes = await db.query(
-          `SELECT name,
+          `SELECT id,
+                  name,
                   description,
                   created_at AS "createdAt",
                   expires_at AS "expiresAt",
@@ -72,13 +73,23 @@ class Session {
 
     const dungeonMasterRes = await db.query(
           `SELECT u.username
-           FROM users As u
+           FROM users AS u
            WHERE u.id = $1`,
         [session.dungeonMasterId],
     );
 
     session.dm = dungeonMasterRes.rows[0];
 
+    const playersRes = await db.query(
+          `SELECT ch.name AS name, ch.profile_url AS profileUrl
+           FROM session_players sp
+           JOIN sessions s ON sp.session_id = s.id
+           JOIN characters ch ON sp.character_id = ch.id
+           WHERE s.id = $1`,
+          [session.id],
+    );
+
+    session.players = playersRes.rows;
     return session;
   }
 
