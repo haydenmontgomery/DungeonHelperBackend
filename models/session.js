@@ -81,7 +81,18 @@ class Session {
     session.dm = dungeonMasterRes.rows[0];
 
     const playersRes = await db.query(
-          `SELECT ch.name AS name, ch.profile_url AS profileUrl
+          `SELECT ch.id AS id, 
+                  ch.name AS name,
+                  ch.class_name AS className,
+                  ch.bio AS bio,
+                  ch.age AS age,
+                  ch.height AS height,
+                  ch.level AS level,
+                  ch.inventory AS inventory,
+                  ch.gold AS gold,
+                  ch.hp AS hp,
+                  ch.profile_url AS profileUrl,
+                  ch.user_id AS userId
            FROM session_players sp
            JOIN sessions s ON sp.session_id = s.id
            JOIN characters ch ON sp.character_id = ch.id
@@ -89,7 +100,7 @@ class Session {
           [session.id],
     );
 
-    session.players = playersRes.rows;
+    session.characters = playersRes.rows;
     return session;
   }
 

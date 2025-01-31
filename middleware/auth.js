@@ -186,38 +186,55 @@ async function ensureCampaignAdmin(req, res, next) {
 async function ensureCampaignUserOrCampaignAdmin(req, res, next) {
   try {
     const user = res.locals.user;
+    console.log(user);
     if (!user) throw new UnauthorizedError();
 
     if (res.locals.user.isAdmin) return next();
 
-    const campaignId = req.params.campaignId;
+    const sessionName = req.params.name;
+
+    const sessionRes = await db.query(
+      `SELECT campaign_id
+       FROM sessions
+       WHERE name = $1`,
+       [sessionName]
+    );
+
+    const campaignId = sessionRes.rows[0].campaign_id;
     
     const userResult = await db.query(
       `SELECT u.id AS user_id
-       FROM campaign_users cu
-       JOIN characters ch ON cu.character_id = ch.id
-       JOIN users u ON ch.user_id = u.id
-       WHERE ch.user_id = $1
-       AND cu.campaign_id = $2`,
+      FROM campaign_users cu
+      JOIN characters ch ON cu.character_id = ch.id
+      JOIN users u ON ch.user_id = u.id
+      WHERE ch.user_id = $1
+      AND cu.campaign_id = $2`,
       [user.id, campaignId]);
-
-    const validUser = userResult.rows[0];
-
-    const adminResult = await db.query(
-      `SELECT user_id
-      FROM campaign_admins
-      WHERE campaign_id = $1
-      AND user_id = $2`,
-      [campaignId, user.id]
-    );
-
-    const adminId = adminResult.rows[0];
-    if (!(adminId || validUser)) {
-      throw new UnauthorizedError();
-    }
-    return next();
-  } catch (err) {
-    return next(err);
+      
+      const validUser = userResult.rows[0];
+      
+      const adminResult = await db.query(
+        `SELECT user_id
+        FROM campaign_admins
+        WHERE campaign_id = $1
+        AND user_id = $2`,
+        [campaignId, user.id]
+      );
+      
+      const adminId = adminResult.rows[0];
+      //console.log("*************************************")
+      //console.log(campaignId);
+      //console.log(userResult)
+      //console.log(validUser)
+      //console.log(adminResult)
+      //console.log(adminId)
+      //console.log("*************************************")
+      if (!(adminId || validUser)) {
+        throw new UnauthorizedError();
+      }
+      return next();
+    } catch (err) {
+      return next(err);
   }
 }
 
